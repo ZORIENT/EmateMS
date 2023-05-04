@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.GameMapper">
+    <!-- 分页查询游戏信息 -->
+    <select id="selectByCondition" resultType="com.zorient.etmate.pojo.Game">
+        select id, game_name, game_name_en, platforms, time_platform,genres, publisher,
+               introduce, cover, img, video, evalute, tags, game_url
+        from etmate.tb_game
+        <where>
+            <if test="gameName!=null and gameName!=''">
+                game_name like concat('%',#{gameName},'%')
+            </if>
+            <if test="platforms!=null and platforms!=''">
+                and platforms like concat('%',#{platforms},'%')
+            </if>
+            <if test="releaseYear!=null">
+                and time_platform like concat('%',#{releaseYear},'%')
+            </if>
+            <if test="genres!=null and genres!=''">
+                and genres like concat('%',#{genres},'%')
+            </if>
+            <if test="publisher!=null and publisher!=''">
+                and publisher like concat('%',#{publisher},'%')
+            </if>
+            <if test="tags!=null and tags!=''">
+                and tags like concat('%',#{tags},'%')
+            </if>
+        </where>
+            order by ${sort} desc
+    </select>
+
+    <!-- 批量删除电影信息 -->
+    <delete id="deleteByIds">
+        delete from tb_game where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 添加游戏信息 -->
+    <insert id="insertGame">
+        insert into tb_game(game_name, game_name_en, platforms, time_platform, genres,
+                            publisher, introduce, cover, img, video, evalute, tags, game_url)
+        values (#{gameName},#{gameNameEn},#{platforms},#{timePlatform},#{genres},
+                #{publisher},#{introduce},#{cover},#{img},#{video},#{evalute},#{tags},#{gameUrl})
+    </insert>
+
+    <!-- 更新游戏信息 -->
+    <update id="updateGame">
+        update tb_game
+        <set>
+            <if test=" gameName !=null and  gameName !=''">
+                game_name =#{ gameName },
+            </if>
+            <if test=" gameNameEn !=null and  gameNameEn !=''">
+                game_name_en =#{ gameNameEn },
+            </if>
+            <if test=" platforms !=null and  platforms !=''">
+                platforms =#{ platforms },
+            </if>
+            <if test=" timePlatform !=null and  timePlatform !=''">
+                time_platform =#{ timePlatform },
+            </if>
+            <if test=" genres !=null and  genres !=''">
+                genres =#{ genres },
+            </if>
+            <if test=" publisher !=null and  publisher !=''">
+                publisher =#{ publisher },
+            </if>
+            <if test=" introduce !=null and  introduce !=''">
+                introduce =#{ introduce },
+            </if>
+            <if test=" cover !=null and  cover !=''">
+                cover =#{ cover },
+            </if>
+            <if test=" img !=null and  img !=''">
+                img =#{ img },
+            </if>
+            <if test=" video !=null and  video !=''">
+                video =#{ video },
+            </if>
+            <if test=" evalute !=null and  evalute !=''">
+                evalute =#{ evalute },
+            </if>
+            <if test=" tags !=null and  tags !=''">
+                tags =#{ tags },
+            </if>
+            <if test=" gameUrl !=null and  gameUrl !=''">
+                game_url =#{ gameUrl },
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>

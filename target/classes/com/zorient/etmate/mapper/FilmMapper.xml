@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.FilmMapper">
+
+    <!--  条件分页查询电影信息  -->
+    <select id="selectByCondition" resultType="com.zorient.etmate.pojo.Film">
+        select
+        id, imdb_id, film_name, cover, alias, director, actors, douban_score, genres, languages, mins, regions,
+        release_date, storyline, release_year, tags
+        from etmate.tb_film
+        <where>
+            <if test="filmName!=null and filmName!=''">
+                film_name like concat('%',#{filmName},'%')
+            </if>
+
+            <if test="genres!=null and genres!=''">
+                and genres like concat('%',#{genres},'%')
+            </if>
+
+            <if test="languages!=null and languages!=''">
+                and languages like concat('%',#{languages},'%')
+            </if>
+
+            <if test="regions!=null and regions!=''">
+                and regions like concat('%',#{regions},'%')
+            </if>
+
+            <if test="releaseYear!=null">
+                and release_year=#{releaseYear}
+            </if>
+
+            <if test="tags!=null and tags!=''">
+                and tags like concat('%',#{tags},'%')
+            </if>
+        </where>
+            order by ${sort} desc
+    </select>
+    <!-- 使用#{}会变成order by ‘douban_score’ desc -->
+
+    <!-- 批量删除电影信息 -->
+    <delete id="deleteByIds">
+        delete from tb_film where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 添加电影 -->
+    <insert id="insertFilm">
+        insert into tb_film(imdb_id, film_name, cover, alias, director, actors, douban_score, genres,
+                            languages, mins, regions, release_date, storyline, release_year, tags)
+        values (#{imdbId}, #{filmName}, #{cover}, #{alias}, #{director}, #{actors}, #{doubanScore}, #{genres},
+                #{languages}, #{mins}, #{regions}, #{releaseDate}, #{storyline}, #{releaseYear}, #{tags})
+    </insert>
+
+    <!-- 更新电影信息 -->
+    <update id="updateFilm">
+        update tb_film
+        <set>
+            <if test="imdbId!=null and imdbId!=''">
+                imdb_id=#{imdbId},
+            </if>
+            <if test="filmName!=null and filmName!=''">
+                film_name=#{filmName},
+            </if>
+            <if test=" cover !=null and  cover !=''">
+                cover =#{cover},
+            </if>
+            <if test=" alias !=null and  alias !=''">
+                alias =#{alias},
+            </if>
+            <if test=" director !=null and  director !=''">
+                director=#{director},
+            </if>
+            <if test=" actors !=null and  actors !=''">
+                actors =#{actors},
+            </if>
+            <if test=" doubanScore !=null">
+                douban_score =#{doubanScore},
+            </if>
+            <if test=" genres !=null and  genres !=''">
+                genres =#{genres},
+            </if>
+            <if test=" languages !=null and  languages !=''">
+                languages =#{languages},
+            </if>
+            <if test=" mins !=null">
+                mins =#{mins},
+            </if>
+            <if test=" regions !=null and  regions !=''">
+                regions =#{regions},
+            </if>
+            <if test=" releaseDate !=null">
+                release_date =#{releaseDate},
+            </if>
+            <if test=" storyline !=null and  storyline !=''">
+                storyline =#{storyline},
+            </if>
+            <if test=" releaseYear !=null">
+                release_year =#{releaseYear},
+            </if>
+            <if test=" tags !=null and tags !=''">
+                tags =#{tags}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,69 @@
+#yml配置文件基本语法
+#1.大小写敏感
+#2.数值前面必须有空格
+#使用缩进表示层级关系
+
+#定义对象、Map集合
+user:
+  name: zhangsan
+  age: 12
+  password: 123456
+
+#定义数组、List、Set集合
+hobby:
+  - Java
+  - C
+  - game
+  - sport
+
+
+
+#配置数据库连接四要素
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/etmate
+    username: root
+    password: 657639
+  servlet:
+    multipart:
+      #配置单个文件上传大小限制
+      max-file-size: 10MB
+      #配置单个请求最大大小限制（在一次请求中可以上传多个文件）
+      max-request-size: 100MB
+
+mybatis:
+  configuration:
+    #配置mybatis的日志，指定输出到控制台
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启mybatis的驼峰命名自动映射开关,a_column------>aColumn
+    map-underscore-to-camel-case: true
+
+#配置内置Tomcat的端口号
+server:
+  port: 8083
+  address: 127.0.0.1
+
+#自定义的阿里云OSS配置文件信息
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    accessKeyId: LTAI5tS7C43U3cR7CDkRKG3g
+    accessKeySecret: dnMQzFT5NYiGPP96V9Ir2VFv1Z1art
+    bucketName: web-zorient
+
+
+#spring事务管理日志
+logging:
+  level:
+    org.springframework.jdbc,support.JdbcTransactionManager: debug
+
+
+
+
+
+
+
+
+
+
