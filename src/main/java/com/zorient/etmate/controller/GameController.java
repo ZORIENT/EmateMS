@@ -1,5 +1,6 @@
 package com.zorient.etmate.controller;
 
+import com.zorient.etmate.anno.Log;
 import com.zorient.etmate.pojo.Game;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.pojo.Result;
@@ -51,6 +52,7 @@ public class GameController {
     /*
     * 批量删除游戏信息
     * */
+    @Log
     @DeleteMapping("/game/{ids}")
     public Result deleteByIds(@PathVariable List<Integer> ids){
         gameService.deleteByIds(ids);
@@ -61,6 +63,7 @@ public class GameController {
     /*
     * 添加游戏信息
     * */
+    @Log
     @PostMapping("/game")
     public Result insertGame(@RequestBody Game game){
         log.info("添加的游戏信息：{}",game);
@@ -72,6 +75,7 @@ public class GameController {
     /*
     * 修改游戏信息
     * */
+    @Log
     @PutMapping("/game")
     public Result updateGame(@RequestBody Game game){
         log.info("修改的游戏信息为：{}",game);

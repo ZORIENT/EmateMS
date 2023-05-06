@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.CollectionMapper">
+    <!-- 配置查询结果和对象的关系 -->
+
+    <!-- 电影收藏 -->
+    <resultMap id="collectionFilm" type="com.zorient.etmate.pojo.Collection">
+        <id property="id" column="collectionId"></id>
+        <result property="type" column="collectionType"></result>
+        <collection property="film" ofType="com.zorient.etmate.pojo.Film">
+            <id property="id" column="filmId"></id>
+            <result property="cover" column="cover"></result>
+            <result property="filmName" column="film_name"></result>
+            <result property="doubanScore" column="douban_score"></result>
+            <result property="tags" column="tags"></result>
+        </collection>
+    </resultMap>
+
+    <!-- 条件分页查询电影收藏 -->
+    <select id="selectFilmCollection" resultMap="collectionFilm">
+        SELECT c.id   collectionId,
+               c.type collectionType,
+               f.id   filmId,
+               f.cover,
+               f.film_name,
+               f.douban_score,
+               f.tags
+        FROM tb_collection c
+                 LEFT JOIN tb_film f ON c.collection_id = f.id
+        WHERE c.user_id = #{userId}
+          AND type = #{type}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 游戏收藏 -->
+    <resultMap id="collectionGame" type="com.zorient.etmate.pojo.Collection">
+        <id property="id" column="collectionId"></id>
+        <result property="type" column="collectionType"></result>
+        <collection property="game" ofType="com.zorient.etmate.pojo.Game">
+            <id property="id" column="gameId"></id>
+            <result property="cover" column="cover"></result>
+            <result property="gameName" column="game_name"></result>
+            <result property="genres" column="genres"></result>
+            <result property="tags" column="tags"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectGameCollection" resultMap="collectionGame">
+        SELECT c.id   collectionId,
+               c.type collectionType,
+               g.id   gameId,
+               g.cover,
+               g.game_name,
+               g.genres,
+               g.tags
+        FROM tb_collection c
+                 LEFT JOIN tb_game g ON c.collection_id = g.id
+        WHERE c.user_id = #{userId}
+          AND type = #{type}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 书籍收藏 -->
+    <resultMap id="collectionBook" type="com.zorient.etmate.pojo.Collection">
+        <id property="id" column="collectionId"></id>
+        <result property="type" column="collectionType"></result>
+        <collection property="book" ofType="com.zorient.etmate.pojo.Book">
+            <id property="id" column="filmId"></id>
+            <result property="cover" column="cover"></result>
+            <result property="bookName" column="book_name"></result>
+            <result property="doubanScore" column="douban_score"></result>
+            <result property="tags" column="tags"></result>
+        </collection>
+    </resultMap>
+
+    <select id="selectBookCollection" resultMap="collectionBook">
+        SELECT c.id   collectionId,
+               c.type collectionType,
+               b.id   bookId,
+               b.cover,
+               b.book_name,
+               b.douban_score,
+               b.tags
+        FROM tb_collection c
+                 LEFT JOIN tb_book b ON c.collection_id = b.id
+        WHERE c.user_id = #{userId}
+          AND type = #{type}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 用户添加收藏 -->
+    <insert id="insertCollection">
+        insert into tb_collection(user_id, collection_id, type, create_time, update_time)
+        values (#{userId}, #{collectionId}, #{type}, #{createTime}, #{updateTime})
+    </insert>
+
+
+
+
+</mapper>

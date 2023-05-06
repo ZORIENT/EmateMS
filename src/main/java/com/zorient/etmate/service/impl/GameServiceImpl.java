@@ -24,7 +24,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public PageBean selectByCondition(String gameName, String platforms, Integer releaseYear, String genres,
                                       String publisher, String tags, Integer sortId, Integer page, Integer pageSize) {
-        String  sort=new String("douban_score");
+        String  sort=new String("game_name");
         switch(sortId){
             case 1:
                 sort="game_name";

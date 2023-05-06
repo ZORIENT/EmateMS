@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.UserMapper">
+    <select id="selectByCondition" resultType="com.zorient.etmate.pojo.User">
+        select id, email, username, gender, password, avatar, privilege, create_time, update_time
+        from tb_user
+        <where>
+            <if test="email!=null and email!=''">
+                email like concat('%',#{ email },'%')
+            </if>
+            <if test=" username !=null and username !=''">
+                and username like concat('%',#{ username },'%')
+            </if>
+            <if test=" gender !=null">
+                and gender =#{gender}
+            </if>
+            <if test=" privilege !=null">
+                and privilege =#{privilege}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <!-- 批量删除用户信息 -->
+    <delete id="deleteByIds">
+        delete from etmate.tb_user where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 修改用户信息 -->
+    <update id="updateUser">
+        update tb_user
+        <set>
+            <if test="email!=null and email!=''">
+                email=#{email},
+            </if>
+            <if test="username!=null and username!=''">
+                username=#{username},
+            </if>
+            <if test="gender!=null">
+                gender=#{gender},
+            </if>
+            <if test="password!=null and password!=''">
+                password=#{password},
+            </if>
+            <if test="avatar!=null and avatar!=''">
+                avatar=#{avatar},
+            </if>
+            <if test="privilege!=null">
+                privilege=#{privilege},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!-- 用户注册 -->
+    <insert id="register">
+        insert into tb_user(email, username, gender, password, avatar, privilege, create_time, update_time)
+        values (#{email},#{username},#{gender},#{password},#{avatar},#{privilege},#{createTime},#{updateTime})
+    </insert>
+
+
+</mapper>

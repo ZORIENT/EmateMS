@@ -4,6 +4,7 @@ package com.zorient.etmate.controller;
  * 电影管理controller
  * */
 
+import com.zorient.etmate.anno.Log;
 import com.zorient.etmate.pojo.Film;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.pojo.Result;
@@ -57,6 +58,7 @@ public class FilmController {
     /*
     * 根据id删除（批量删除）电影
     * */
+    @Log
     @DeleteMapping("/film/{ids}")
     public Result deleteByIds(@PathVariable List<Integer> ids){
         filmService.deleteByIds(ids);
@@ -67,6 +69,7 @@ public class FilmController {
     /*
     * 添加电影
     * */
+    @Log
     @PostMapping("/film")
     public Result insertFilm(@RequestBody Film film){
         log.info("添加的电影信息：{}",film);
@@ -78,6 +81,7 @@ public class FilmController {
     /*
     * 修改电影信息
     * */
+    @Log
     @PutMapping("/film")
     public Result updateFilm(@RequestBody Film film){
         log.info("更新的电影信息：{}",film);
