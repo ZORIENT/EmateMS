@@ -17,4 +17,6 @@ public interface BookService {
     void insertBook(Book book);
 
     void updateBook(Book book);
+
+    PageBean getSimilarBooks(Integer id, int page, int pageSize);
 }

@@ -25,7 +25,7 @@ public class CollectionServiceImpl implements CollectionService {
      * 条件分页查询收藏信息
      * */
     @Override
-    public PageBean selectByCondition(Integer userId, Short type, Integer page, Integer pageSize) {
+    public PageBean selectByCondition(Integer userId, Integer collectionId, Short type, Integer page, Integer pageSize) {
         //使用pagehelper设置分页参数
         PageHelper.startPage(page, pageSize);
         List<Collection> collections=null;
@@ -34,15 +34,15 @@ public class CollectionServiceImpl implements CollectionService {
         switch (type) {
             /*查询电影收藏*/
             case 1:
-                collections = collectionMapper.selectFilmCollection(userId,type);
+                collections = collectionMapper.selectFilmCollection(userId,collectionId,type);
                 break;
             /*查询游戏收藏*/
             case 2:
-                collections=collectionMapper.selectGameCollection(userId,type);
+                collections=collectionMapper.selectGameCollection(userId,collectionId,type);
                 break;
             /*查询书籍收藏*/
             case 3:
-                collections=collectionMapper.selectBookCollection(userId,type);
+                collections=collectionMapper.selectBookCollection(userId,collectionId,type);
                 break;
             default:
                 throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);

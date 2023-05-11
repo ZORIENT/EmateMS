@@ -93,6 +93,24 @@
         </set>
         where id=#{id}
     </update>
+
+    <!-- 根据书籍id推荐相似书籍 -->
+    <select id="getSimilarBooks" resultType="com.zorient.etmate.pojo.Book">
+        select *
+        from (select * from tb_book where id !=#{id}) r
+        <where>
+            <if test="author!=null and author!=''">
+                r.author like concat('%', #{author}, '%')
+            </if>
+            <if test="tag!=null and tag!=''">
+                or r.tags like concat('%', #{tag}, '%')
+            </if>
+            <if test="publisher!=null and publisher!=''">
+                or r.publisher like concat('%', #{publisher}, '%')
+            </if>
+        </where>
+        order by douban_score desc, tags desc
+    </select>
 </mapper>
 
 

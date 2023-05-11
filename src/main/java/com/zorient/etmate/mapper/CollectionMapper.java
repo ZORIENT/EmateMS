@@ -8,11 +8,11 @@ import java.util.List;
 
 @Mapper
 public interface CollectionMapper {
-    List<Collection> selectFilmCollection(Integer userId, Short type);
+    List<Collection> selectFilmCollection(Integer userId, Integer collectionId, Short type);
 
-    List<Collection> selectGameCollection(Integer userId, Short type);
+    List<Collection> selectGameCollection(Integer userId,Integer collectionId, Short type);
 
-    List<Collection> selectBookCollection(Integer userId, Short type);
+    List<Collection> selectBookCollection(Integer userId,Integer collectionId, Short type);
 
     void insertCollection(Collection collection);
 

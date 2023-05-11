@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -54,5 +55,20 @@ public class FilmTest {
                 "汉语",125,"大陆", LocalDate.now(),"简介",2023,"测试/熬夜/秃头");
 
         filmMapper.updateFilm(film);
+    }
+
+    @Test
+    public void testGetSimilarFilms(){
+//        List<Film> films=filmMapper.getSimilarFilms(1,"霸王","陈凯歌","普通话");
+//
+//        log.info(films.toString());
+
+        Film film=filmMapper.selectById(1);
+
+        String[]  tags=film.getTags().split("/");
+
+        for(int i=0;i<tags.length;i++){
+            log.info(tags[i]);
+        }
     }
 }

@@ -84,6 +84,17 @@ public class BookController {
         return Result.success();
     }
 
+    /*
+     * 根据书籍详情推荐相关书籍
+     * */
+    @GetMapping("/book/similarBook/{id}")
+    public Result getSimilarBooks(@PathVariable Integer id){
+        log.info("需要推荐的书籍id：{}",id);
+        PageBean pageBean=bookService.getSimilarBooks(id,1,5);
+
+        return Result.success(pageBean);
+    }
+
 
 }
 

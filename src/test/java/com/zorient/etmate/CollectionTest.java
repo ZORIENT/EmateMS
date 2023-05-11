@@ -18,19 +18,19 @@ public class CollectionTest {
 
     @Test
     public void testSelectFilmCollection(){
-        List<Collection> collectionList= collectionMapper.selectFilmCollection(1,(short)1);
+        List<Collection> collectionList= collectionMapper.selectFilmCollection(1,null,(short)1);
         log.info(collectionList.toString());
     }
 
     @Test
     public void testSelectGameCollection(){
-        List<Collection> collectionList= collectionMapper.selectGameCollection(1,(short)2);
+        List<Collection> collectionList= collectionMapper.selectGameCollection(1,null,(short)2);
         log.info(collectionList.toString());
     }
 
     @Test
     public void testSelectBookCollection(){
-        List<Collection> collectionList= collectionMapper.selectBookCollection(1,(short)3);
+        List<Collection> collectionList= collectionMapper.selectBookCollection(1,null,(short)3);
         log.info(collectionList.toString());
     }
 

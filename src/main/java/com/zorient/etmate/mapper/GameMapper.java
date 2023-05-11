@@ -21,4 +21,6 @@ public interface GameMapper {
     void insertGame(Game game);
 
     void updateGame(Game game);
+
+    List<Game> getSimilarGames(Integer id, String tag, String publisher, String genres);
 }

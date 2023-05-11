@@ -4,6 +4,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zorient.etmate.mapper.BookMapper;
 import com.zorient.etmate.pojo.Book;
+import com.zorient.etmate.pojo.Film;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.service.BookService;
 import lombok.extern.slf4j.Slf4j;
@@ -86,5 +87,28 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateBook(Book book) {
         bookMapper.updateBook(book);
+    }
+
+    /*
+    * 根据书籍id查询相关书籍
+    * */
+    @Override
+    public PageBean getSimilarBooks(Integer id, int page, int pageSize) {
+        Book book=bookMapper.selectById(id);
+
+        String[] tag=book.getTags().split("/");
+
+        //使用pagehelper设置分页参数
+        PageHelper.startPage(page,pageSize);
+
+        //执行查询
+        List<Book> bookList=bookMapper.getSimilarBooks(id,tag[0],book.getAuthor(),book.getPublisher());
+        Page<Book> p= (Page<Book>) bookList;
+
+        //结果封装PageBean
+        PageBean pageBean=new PageBean(p.getTotal(),p.getResult());
+        log.info("条件查询书籍：{}",pageBean);
+
+        return pageBean;
     }
 }

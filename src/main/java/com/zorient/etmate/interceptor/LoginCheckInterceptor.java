@@ -1,7 +1,9 @@
 package com.zorient.etmate.interceptor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zorient.etmate.exception.AppException;
 import com.zorient.etmate.exception.AppExceptionCodeMsg;
+import com.zorient.etmate.pojo.Result;
 import com.zorient.etmate.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,32 +19,38 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         System.out.println("preHandler...");
         //1.获取请求url
-        String url=request.getRequestURL().toString();
+        String url = request.getRequestURL().toString();
         //2.获取请求中的token
-        String jwt=request.getHeader("token");
+        String jwt = request.getHeader("token");
         //3.判断获取的token是否为空，如果为空则拦截
-        if(!StringUtils.hasLength(jwt)){
+        if (!StringUtils.hasLength(jwt)) {
             log.info("请求头token为空，返回未登录的信息");
-            /*Result error=Result.error("NOT_LOGIN");
+            Result error=Result.error("NOT_LOGIN");
             //手动转换
             String notLogin= JSONObject.toJSONString(error);
             response.getWriter().write(notLogin);
-            return false;*/
-            throw new AppException(AppExceptionCodeMsg.NO_LOGIN);
+
+            if (request.getMethod().equals("OPTIONS")) {
+                return true;
+            }else{
+                return false;
+            }
+//            throw new AppException(AppExceptionCodeMsg.NO_LOGIN);
+//            return true;
         }
 
         //4.校验jwt令牌是否合法
-        try{
+        try {
             JwtUtils.parseJWT(jwt);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.info("解析令牌失败，返回未登录的错误信息");
-            /*Result error=Result.error("NOT_LOGIN");
+            Result error=Result.error("NOT_LOGIN");
             //手动转换
             String notLogin= JSONObject.toJSONString(error);
             response.getWriter().write(notLogin);
-            return false;*/
-            throw new AppException(AppExceptionCodeMsg.NO_LOGIN);
+            return false;
+//            throw new AppException(AppExceptionCodeMsg.NO_LOGIN);
         }
 
         //5.放行

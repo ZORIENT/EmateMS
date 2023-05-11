@@ -84,5 +84,15 @@ public class GameController {
         return Result.success();
     }
 
+    /*
+     * 根据游戏详情推荐相关游戏
+     * */
+    @GetMapping("/game/similarGame/{id}")
+    public Result getSimilarGames(@PathVariable Integer id){
+        log.info("需要推荐的游戏id：{}",id);
+        PageBean pageBean=gameService.getSimilarGames(id,1,5);
+
+        return Result.success(pageBean);
+    }
 
 }

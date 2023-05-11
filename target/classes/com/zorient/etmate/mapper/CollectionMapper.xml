@@ -7,43 +7,48 @@
 
     <!-- 电影收藏 -->
     <resultMap id="collectionFilm" type="com.zorient.etmate.pojo.Collection">
-        <id property="id" column="collectionId"></id>
-        <result property="type" column="collectionType"></result>
+        <id property="id" column="collectionId"/>
+        <result property="type" column="collectionType"/>
         <collection property="film" ofType="com.zorient.etmate.pojo.Film">
-            <id property="id" column="filmId"></id>
-            <result property="cover" column="cover"></result>
-            <result property="filmName" column="film_name"></result>
-            <result property="doubanScore" column="douban_score"></result>
-            <result property="tags" column="tags"></result>
+            <id property="id" column="filmId"/>
+            <result property="cover" column="cover"/>
+            <result property="filmName" column="film_name"/>
+            <result property="doubanScore" column="douban_score"/>
+            <result property="tags" column="tags"/>
         </collection>
     </resultMap>
 
     <!-- 条件分页查询电影收藏 -->
     <select id="selectFilmCollection" resultMap="collectionFilm">
-        SELECT c.id   collectionId,
-               c.type collectionType,
-               f.id   filmId,
-               f.cover,
-               f.film_name,
-               f.douban_score,
-               f.tags
+        SELECT c.id collectionId,
+        c.type collectionType,
+        f.id filmId,
+        f.cover,
+        f.film_name,
+        f.douban_score,
+        f.tags
         FROM tb_collection c
-                 LEFT JOIN tb_film f ON c.collection_id = f.id
-        WHERE c.user_id = #{userId}
-          AND type = #{type}
+        LEFT JOIN tb_film f ON c.collection_id = f.id
+        <where>
+            c.user_id = #{userId}
+            AND type = #{type}
+            <if test="collectionId !=null">
+                and c.collection_id =#{collectionId}
+            </if>
+        </where>
         ORDER BY create_time DESC
     </select>
 
     <!-- 游戏收藏 -->
     <resultMap id="collectionGame" type="com.zorient.etmate.pojo.Collection">
-        <id property="id" column="collectionId"></id>
-        <result property="type" column="collectionType"></result>
+        <id property="id" column="collectionId"/>
+        <result property="type" column="collectionType"/>
         <collection property="game" ofType="com.zorient.etmate.pojo.Game">
-            <id property="id" column="gameId"></id>
-            <result property="cover" column="cover"></result>
-            <result property="gameName" column="game_name"></result>
-            <result property="genres" column="genres"></result>
-            <result property="tags" column="tags"></result>
+            <id property="id" column="gameId"/>
+            <result property="cover" column="cover"/>
+            <result property="gameName" column="game_name"/>
+            <result property="genres" column="genres"/>
+            <result property="tags" column="tags"/>
         </collection>
     </resultMap>
 
@@ -57,21 +62,26 @@
                g.tags
         FROM tb_collection c
                  LEFT JOIN tb_game g ON c.collection_id = g.id
-        WHERE c.user_id = #{userId}
-          AND type = #{type}
+        <where>
+            c.user_id = #{userId}
+            AND type = #{type}
+            <if test="collectionId !=null">
+                and c.collection_id =#{collectionId}
+            </if>
+        </where>
         ORDER BY create_time DESC
     </select>
 
     <!-- 书籍收藏 -->
     <resultMap id="collectionBook" type="com.zorient.etmate.pojo.Collection">
-        <id property="id" column="collectionId"></id>
-        <result property="type" column="collectionType"></result>
+        <id property="id" column="collectionId"/>
+        <result property="type" column="collectionType"/>
         <collection property="book" ofType="com.zorient.etmate.pojo.Book">
-            <id property="id" column="filmId"></id>
-            <result property="cover" column="cover"></result>
-            <result property="bookName" column="book_name"></result>
-            <result property="doubanScore" column="douban_score"></result>
-            <result property="tags" column="tags"></result>
+            <id property="id" column="filmId"/>
+            <result property="cover" column="cover"/>
+            <result property="bookName" column="book_name"/>
+            <result property="doubanScore" column="douban_score"/>
+            <result property="tags" column="tags"/>
         </collection>
     </resultMap>
 
@@ -85,8 +95,13 @@
                b.tags
         FROM tb_collection c
                  LEFT JOIN tb_book b ON c.collection_id = b.id
-        WHERE c.user_id = #{userId}
-          AND type = #{type}
+        <where>
+            c.user_id = #{userId}
+            AND type = #{type}
+            <if test="collectionId !=null">
+                and c.collection_id =#{collectionId}
+            </if>
+        </where>
         ORDER BY create_time DESC
     </select>
 

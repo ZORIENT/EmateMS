@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)//捕获所有异常
     public Result ex(Exception ex){
+        ex.printStackTrace();
+
         //判断拦截的异常是否是自定义的异常
         if(ex instanceof AppException){
             AppException appException=(AppException) ex;
@@ -20,6 +22,7 @@ public class GlobalExceptionHandler {
 
         //如果不是自定义的异常
         return Result.error("服务器端异常");
+
 
         /*
         * 使用：throw new AppException(AppExceptionCodeMsg.EMAIL_ALREADY_EXIST);

@@ -1,5 +1,6 @@
 package com.zorient.etmate.controller;
 
+import com.zorient.etmate.anno.Log;
 import com.zorient.etmate.pojo.Collection;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.pojo.Result;
@@ -19,10 +20,11 @@ public class CollectionController {
     * */
     @GetMapping("/collection")
     public Result selectByCondition(@RequestParam(required = true) Integer userId,
+                                    @RequestParam(required = false) Integer collectionId,
                                     @RequestParam(defaultValue = "1") Short type,
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "35") Integer pageSize){
-        PageBean pageBean=collectionService.selectByCondition(userId,type,page,pageSize);
+        PageBean pageBean=collectionService.selectByCondition(userId,collectionId,type,page,pageSize);
 
         return Result.success(pageBean);
     }
@@ -30,6 +32,7 @@ public class CollectionController {
     /*
     * 用户添加收藏
     * */
+    @Log
     @PostMapping("/collection")
     public Result insertCollection(@RequestBody Collection collection){
         log.info("添加的收藏信息为：{}",collection);
@@ -41,6 +44,7 @@ public class CollectionController {
     /*
     * 用户取消收藏(一次只能取消一个)
     * */
+    @Log
     @DeleteMapping("/collection/{id}")
     public Result deleteById(@PathVariable Integer id){
         log.info("取消收藏的id：{}",id);

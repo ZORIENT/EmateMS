@@ -87,4 +87,28 @@ public class FilmServiceImpl implements FilmService {
     public void updateFilm(Film film) {
         filmMapper.updateFilm(film);
     }
+
+    /*
+    * 根据电影id推荐相关电影
+    * */
+    @Override
+    public PageBean getSimilarFilms(Integer id, int page, int pageSize) {
+        Film film=filmMapper.selectById(id);
+
+        String[] actor=film.getActors().split("/");
+        String[] tag=film.getTags().split("/");
+
+        //使用pagehelper设置分页参数
+        PageHelper.startPage(page,pageSize);
+
+        //执行查询
+        List<Film> filmList=filmMapper.getSimilarFilms(id,actor[0],tag[0],film.getDirector());
+        Page<Film> p= (Page<Film>) filmList;
+
+        //结果封装PageBean
+        PageBean pageBean=new PageBean(p.getTotal(),p.getResult());
+        log.info("条件查询电影：{}",pageBean);
+
+        return pageBean;
+    }
 }

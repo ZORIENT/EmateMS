@@ -88,7 +88,7 @@ public class UserController {
     /*
      * 用户登录
      * */
-    @GetMapping("/user/login")
+    @PostMapping("/user/login")
     public Result login(@RequestBody User user) {
         log.info("登录用户信息为：{}", user);
         User u = userService.login(user);

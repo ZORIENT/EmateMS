@@ -89,6 +89,17 @@ public class FilmController {
 
         return Result.success();
     }
+
+    /*
+    * 根据电影详情推荐相关电影
+    * */
+    @GetMapping("/film/similarFilm/{id}")
+    public Result getSimilarFilms(@PathVariable Integer id){
+        log.info("需要推荐的电影id：{}",id);
+        PageBean pageBean=filmService.getSimilarFilms(id,1,5);
+
+        return Result.success(pageBean);
+    }
 }
 
 

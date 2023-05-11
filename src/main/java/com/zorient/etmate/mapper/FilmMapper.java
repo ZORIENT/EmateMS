@@ -20,4 +20,6 @@ public interface FilmMapper {
     void insertFilm(Film film);
 
     void updateFilm(Film film);
+
+    List<Film> getSimilarFilms(Integer id,String actor,String tag,String director);
 }

@@ -17,4 +17,6 @@ public interface GameService {
     void insertGame(Game game);
 
     void updateGame(Game game);
+
+    PageBean getSimilarGames(Integer id, int page, int pageSize);
 }

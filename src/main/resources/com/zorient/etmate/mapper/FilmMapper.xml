@@ -28,14 +28,14 @@
             </if>
 
             <if test="releaseYear!=null">
-                and release_year=#{releaseYear}
+                and release_year like concat('%',#{releaseYear},'%')
             </if>
 
             <if test="tags!=null and tags!=''">
                 and tags like concat('%',#{tags},'%')
             </if>
         </where>
-            order by ${sort} desc
+        order by ${sort} desc
     </select>
     <!-- 使用#{}会变成order by ‘douban_score’ desc -->
 
@@ -108,7 +108,23 @@
         where id=#{id}
     </update>
 
-
+    <!-- 根据电影id推荐相似电影 -->
+    <select id="getSimilarFilms" resultType="com.zorient.etmate.pojo.Film">
+        select *
+        from (select * from tb_film where id !=#{id}) r
+        <where>
+            <if test="actor!=null and actor!=''">
+                r.actors like concat('%', #{actor}, '%')
+            </if>
+            <if test="tag!=null and tag!=''">
+                or r.tags like concat('%', #{tag}, '%')
+            </if>
+            <if test="director!=null and director!=''">
+                or r.director like concat('%', #{director}, '%')
+            </if>
+        </where>
+        order by douban_score desc, tags desc
+    </select>
 </mapper>
 
 

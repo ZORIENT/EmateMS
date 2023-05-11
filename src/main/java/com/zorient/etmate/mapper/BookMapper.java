@@ -20,4 +20,6 @@ public interface BookMapper {
     void insertBook(Book book);
 
     void updateBook(Book book);
+
+    List<Book> getSimilarBooks(Integer id, String tag, String author, String publisher);
 }

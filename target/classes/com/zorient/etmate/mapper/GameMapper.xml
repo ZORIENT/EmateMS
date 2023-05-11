@@ -94,4 +94,22 @@
         where id=#{id}
     </update>
 
+    <!-- 根据游戏id推荐相关游戏 -->
+    <select id="getSimilarGames" resultType="com.zorient.etmate.pojo.Game">
+        select *
+        from (select * from tb_game where id !=#{id}) r
+        <where>
+            <if test="tag!=null and tag!=''">
+                r.tags like concat('%', #{tag}, '%')
+            </if>
+            <if test="publisher!=null and publisher!=''">
+                or r.publisher like concat('%', #{publisher}, '%')
+            </if>
+            <if test="genres!=null and genres!=''">
+                or r.genres like concat('%', #{genres}, '%')
+            </if>
+        </where>
+        order by time_platform desc, tags desc
+    </select>
+
 </mapper>

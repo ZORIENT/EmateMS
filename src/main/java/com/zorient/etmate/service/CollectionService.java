@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface CollectionService {
 
-    PageBean selectByCondition(Integer userId,Short type, Integer page, Integer pageSize);
+    PageBean selectByCondition(Integer userId,Integer collectionId,Short type, Integer page, Integer pageSize);
 
     void insertCollection(Collection collection);
 

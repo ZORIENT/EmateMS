@@ -17,4 +17,6 @@ public interface FilmService {
     void insertFilm(Film film);
 
     void updateFilm(Film film);
+
+    PageBean getSimilarFilms(Integer id, int page, int pageSize);
 }
