@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.SearchMapper">
+    <!-- 根据关键词查询相关电影 -->
+    <select id="searchFilm" resultType="com.zorient.etmate.pojo.Film">
+        select *
+        from tb_film
+        where film_name like concat('%', #{keyword}, '%')
+           or alias like concat('%', #{keyword}, '%')
+           or director like concat('%', #{keyword}, '%')
+           or actors like concat('%', #{keyword}, '%')
+           or genres like concat('%', #{keyword}, '%')
+           or tags like concat('%', #{keyword}, '%')
+        order by douban_score desc, genres desc
+    </select>
+
+    <!-- 根据关键词查询相关游戏 -->
+    <select id="searchGame" resultType="com.zorient.etmate.pojo.Game">
+        select *
+        from tb_game
+        where game_name like concat('%', #{keyword}, '%')
+           or game_name_en like concat('%', #{keyword}, '%')
+           or genres like concat('%', #{keyword}, '%')
+           or publisher like concat('%', #{keyword}, '%')
+           or tags like concat('%', #{keyword}, '%')
+        order by time_platform desc, tags desc
+    </select>
+
+    <!-- 根据关键词查询相关书籍 -->
+    <select id="searchBook" resultType="com.zorient.etmate.pojo.Book">
+        select *
+        from tb_book
+        where book_name like concat('%', #{keyword}, '%')
+           or author like concat('%', #{keyword}, '%')
+           or publisher like concat('%', #{keyword}, '%')
+           or tags like concat('%', #{keyword}, '%')
+           or ibsn like concat('%', #{keyword}, '%')
+        order by douban_score desc, publication_time desc
+    </select>
+
+</mapper>

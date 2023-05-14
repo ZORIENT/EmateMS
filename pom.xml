@@ -108,6 +108,14 @@
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
+        <!--assertj-core List依赖-->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.16.1</version>
+            <scope>compile</scope>
+        </dependency>
+
 
     </dependencies>
 

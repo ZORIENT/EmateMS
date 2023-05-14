@@ -19,7 +19,7 @@ public class CommentTest {
     @Test
     public void testSelectFilmComment() {
         List<Comment> commentList = commentMapper.selectFilmComment(
-                null, "暴走", (short) 1, null, null, null, null, 0);
+                null, null, (short) 1, null, null, null, null, 0);
         log.info(commentList.toString());
     }
 

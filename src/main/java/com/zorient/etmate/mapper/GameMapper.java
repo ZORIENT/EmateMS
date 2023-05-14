@@ -23,4 +23,10 @@ public interface GameMapper {
     void updateGame(Game game);
 
     List<Game> getSimilarGames(Integer id, String tag, String publisher, String genres);
+
+    @Select("select * from tb_game")
+    List<Game> getAllGames();
+
+    @Select("select * from tb_game ORDER BY time_platform DESC,tags DESC LIMIT 0,#{size}")
+    List<Game> getHotGames(Integer size);
 }

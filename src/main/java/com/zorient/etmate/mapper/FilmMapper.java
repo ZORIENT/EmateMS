@@ -22,4 +22,9 @@ public interface FilmMapper {
     void updateFilm(Film film);
 
     List<Film> getSimilarFilms(Integer id,String actor,String tag,String director);
+
+    @Select("select * from tb_film")
+    List<Film> getAllFilms();
+    @Select("select * from tb_film ORDER BY release_date DESC,douban_score DESC LIMIT 0,#{size}")
+    List<Film> getHotFilms(Integer size);
 }

@@ -1,6 +1,7 @@
 package com.zorient.etmate.mapper;
 
 import com.zorient.etmate.pojo.Book;
+import com.zorient.etmate.pojo.Film;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -22,4 +23,17 @@ public interface BookMapper {
     void updateBook(Book book);
 
     List<Book> getSimilarBooks(Integer id, String tag, String author, String publisher);
+
+    @Select("select * from tb_book")
+    List<Book> getAllBooks();
+
+    @Select("select * from tb_book ORDER BY  publication_time DESC,douban_score DESC LIMIT 0,#{size}")
+    List<Book> getHotBooks(Integer size);
 }
+
+
+
+
+
+
+
