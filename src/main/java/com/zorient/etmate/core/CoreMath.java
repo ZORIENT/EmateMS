@@ -15,7 +15,7 @@ public class CoreMath {
      *
      * @param id（当前拟推荐用户的id）
      * @param map（各用户对于物品的评分信息，根据用户id进行分组）
-     * @param type                         （类型0基于用户推荐 1基于物品推荐）
+     * @param type （类型0基于用户推荐 1基于物品推荐）
      * @return Map<Integer, Double> <用户id,该用户与拟推荐用户间的相关系数>
      */
     public static Map<Integer, Double> computeNeighbor(Integer id, Map<Integer, List<Comment>> map, int type) {

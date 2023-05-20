@@ -5,9 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.zorient.etmate.exception.AppException;
 import com.zorient.etmate.exception.AppExceptionCodeMsg;
 import com.zorient.etmate.mapper.CommentMapper;
-import com.zorient.etmate.pojo.Comment;
-import com.zorient.etmate.pojo.PageBean;
-import com.zorient.etmate.pojo.Rate;
+import com.zorient.etmate.mapper.ReplyMapper;
+import com.zorient.etmate.pojo.*;
 import com.zorient.etmate.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -24,11 +24,14 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentMapper commentMapper;
 
+    @Autowired
+    private ReplyMapper replyMapper;
+
     /*
      * 条件分页查询评论信息
      * */
     @Override
-    public PageBean selectByCondition(Integer userId, String username, Short type, Integer itemId, String itemName,
+    public PageBean selectByCondition(Integer userId, String username, Short type, Integer itemId,String itemName,
                                       LocalDate begin, LocalDate end, Integer page, Integer pageSize) {
         //使用pagehelper设置分页参数
         PageHelper.startPage(page, pageSize);
@@ -58,7 +61,6 @@ public class CommentServiceImpl implements CommentService {
                     comment.setChildren(commentMapper.selectBookComment(null, null,
                             comment.getType(), comment.getItemId(), null, null, null, comment.getId()));
                 });
-
                 break;
             default:
                 throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);
@@ -123,4 +125,39 @@ public class CommentServiceImpl implements CommentService {
 
         return rate;
     }
+
+    /*
+    * 根据用户id查询该用户的评论回复
+    * */
+    @Override
+    public ReplyResult getReply(Integer id) {
+        List<Comment> filmReply = replyMapper.selectFilmReply(id);
+        List<Comment> gameReply = replyMapper.selectGameReply(id);
+        List<Comment> bookReply = replyMapper.selectBookReply(id);
+
+        ReplyResult replyResult=new ReplyResult(filmReply,gameReply,bookReply);
+
+        return replyResult;
+    }
+
+    /*
+     * 根据用户id查询其他用户回复你的评论
+     * */
+    @Override
+    public List<Reply> replyToMine(Integer id) {
+
+        List<Reply> filmReply=replyMapper.filmReplyToMine(id);
+        List<Reply> gameReply=replyMapper.gameReplyToMine(id);
+        List<Reply> bookReply=replyMapper.bookReplyToMine(id);
+        filmReply.addAll(gameReply);
+        filmReply.addAll(bookReply);
+        /*
+        * 降序排序
+        * */
+        filmReply.sort(Comparator.comparing(Reply::getUpdateTime).reversed());
+
+        return filmReply;
+    }
+
+
 }

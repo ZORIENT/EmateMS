@@ -32,7 +32,6 @@ public class CollectionController {
     /*
     * 用户添加收藏
     * */
-    @Log
     @PostMapping("/collection")
     public Result insertCollection(@RequestBody Collection collection){
         log.info("添加的收藏信息为：{}",collection);
@@ -44,7 +43,6 @@ public class CollectionController {
     /*
     * 用户取消收藏(一次只能取消一个)
     * */
-    @Log
     @DeleteMapping("/collection/{id}")
     public Result deleteById(@PathVariable Integer id){
         log.info("取消收藏的id：{}",id);
@@ -52,7 +50,4 @@ public class CollectionController {
 
         return Result.success();
     }
-
-
-
 }

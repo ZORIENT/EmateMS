@@ -110,8 +110,6 @@ public class UserController {
 
         /*return Result.error("NO_LOGIN");*/
     }
-
-
 }
 
 

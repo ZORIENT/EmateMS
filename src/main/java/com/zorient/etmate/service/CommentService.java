@@ -1,8 +1,6 @@
 package com.zorient.etmate.service;
 
-import com.zorient.etmate.pojo.Comment;
-import com.zorient.etmate.pojo.PageBean;
-import com.zorient.etmate.pojo.Rate;
+import com.zorient.etmate.pojo.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,4 +17,8 @@ public interface CommentService {
     void updateComment(Comment comment);
 
     Rate getRates(Integer itemId,Short type);
+
+    ReplyResult getReply(Integer id);
+
+    List<Reply> replyToMine(Integer id);
 }

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.ReplyMapper">
+
+    <!-- 电影回复 -->
+    <resultMap id="FilmReply" type="com.zorient.etmate.pojo.Comment">
+        <id property="id" column="commentId"/>
+
+        <result property="userId" column="userId"/>
+        <result property="itemId" column="filmId"/>
+        <result property="type" column="type"/>
+        <result property="parentId" column="parentId"/>
+        <result property="comment" column="comment"/>
+        <result property="score" column="score"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="user" ofType="com.zorient.etmate.pojo.User">
+            <id property="id" column="userId"/>
+            <result property="avatar" column="avatar"/>
+            <result property="username" column="username"/>
+        </collection>
+        <collection property="film" ofType="com.zorient.etmate.pojo.Film">
+            <id property="id" column="filmId"/>
+            <result property="cover" column="cover"/>
+            <result property="filmName" column="film_name"/>
+        </collection>
+    </resultMap>
+
+    <!-- 条件分页查询电影回复信息 -->
+    <select id="selectFilmReply" resultMap="FilmReply">
+        SELECT
+        c.id commentId,u.id userId,u.avatar,u.username,f.id filmId,f.cover,f.film_name,
+        c.type,c.parent_id parentId,c.comment,c.score,c.create_time,c.update_time
+        FROM
+        tb_comment c
+        LEFT JOIN tb_user u ON c.user_id = u.id
+        LEFT JOIN tb_film f ON c.item_id = f.id
+        <where>
+            <if test="id !=null">
+                c.user_id = #{id}
+            </if>
+            and c.type=1
+            and c.parent_id !=0
+        </where>
+        order by create_time desc
+    </select>
+
+    <!-- 游戏回复 -->
+    <resultMap id="GameReply" type="com.zorient.etmate.pojo.Comment">
+        <id property="id" column="commentId"/>
+        <result property="userId" column="userId"/>
+        <result property="itemId" column="gameId"/>
+        <result property="type" column="type"/>
+        <result property="parentId" column="parentId"/>
+        <result property="comment" column="comment"/>
+        <result property="score" column="score"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="user" ofType="com.zorient.etmate.pojo.User">
+            <id property="id" column="userId"/>
+            <result property="avatar" column="avatar"/>
+            <result property="username" column="username"/>
+        </collection>
+        <collection property="game" ofType="com.zorient.etmate.pojo.Game">
+            <id property="id" column="filmId"/>
+            <result property="cover" column="cover"/>
+            <result property="gameName" column="game_name"/>
+        </collection>
+    </resultMap>
+
+    <!-- 条件分页查询游戏回复信息 -->
+    <select id="selectGameReply" resultMap="GameReply">
+        SELECT
+        c.id commentId,u.id userId,u.avatar,u.username,g.id gameId,g.cover,g.game_name,
+        c.type,c.parent_id parentId,c.`comment`,c.score,c.create_time,c.update_time
+        FROM
+        tb_comment c
+        LEFT JOIN tb_user u ON c.user_id = u.id
+        LEFT JOIN tb_game g ON c.item_id = g.id
+        <where>
+            <if test="id !=null">
+                c.user_id = #{id}
+            </if>
+            and c.type=2
+            and c.parent_id !=0
+        </where>
+        order by create_time desc
+    </select>
+
+    <!-- 书籍评论 -->
+    <resultMap id="BookReply" type="com.zorient.etmate.pojo.Comment">
+        <id property="id" column="commentId"/>
+        <result property="userId" column="userId"/>
+        <result property="itemId" column="bookId"/>
+        <result property="type" column="type"/>
+        <result property="parentId" column="parentId"/>
+        <result property="comment" column="comment"/>
+        <result property="score" column="score"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <collection property="user" ofType="com.zorient.etmate.pojo.User">
+            <id property="id" column="userId"/>
+            <result property="avatar" column="avatar"/>
+            <result property="username" column="username"/>
+        </collection>
+        <collection property="book" ofType="com.zorient.etmate.pojo.Book">
+            <id property="id" column="bookId"/>
+            <result property="cover" column="cover"/>
+            <result property="bookName" column="book_name"/>
+        </collection>
+    </resultMap>
+
+    <!-- 条件分页查询书籍评论信息 -->
+    <select id="selectBookReply" resultMap="BookReply">
+        SELECT
+        c.id commentId,u.id userId,u.avatar,u.username,b.id bookId,b.cover,b.book_name,
+        c.type,c.parent_id parentId,c.`comment`,c.score,c.create_time,c.update_time
+        FROM
+        tb_comment c
+        LEFT JOIN tb_user u ON c.user_id = u.id
+        LEFT JOIN tb_book b ON c.item_id = b.id
+        <where>
+            <if test="id !=null">
+                c.user_id = #{id}
+            </if>
+            and c.type=3
+            and c.parent_id !=0
+        </where>
+        order by create_time desc
+    </select>
+
+    <resultMap id="ReplyToMine" type="com.zorient.etmate.pojo.Reply">
+        <id property="id" column="id"></id>
+        <result property="updateTime" column="updateTime"></result>
+        <result property="comment" column="comment"></result>
+        <result property="itemName" column="itemName"></result>
+        <result property="username" column="username"></result>
+        <result property="avatar" column="avatar"></result>
+        <result property="reply" column="reply"></result>
+    </resultMap>
+
+    <select id="filmReplyToMine" resultMap="ReplyToMine">
+        SELECT u.avatar       avatar,
+               u.username     username,
+               f.film_name    itemName,
+               c1.`comment`   reply,
+               c2.`comment`   comment,
+               c1.update_time updateTime
+        FROM tb_comment c1
+                 LEFT JOIN tb_comment c2 ON c1.parent_id = c2.id
+                 LEFT JOIN tb_user u ON c1.user_id = u.id
+                 LEFT JOIN tb_film f ON c1.item_id = f.id
+        WHERE c1.parent_id IN (SELECT id FROM tb_comment WHERE user_id = #{id} AND parent_id = 0)
+          AND c1.type = 1
+        ORDER BY c1.update_time DESC
+    </select>
+
+    <select id="gameReplyToMine" resultMap="ReplyToMine">
+        SELECT u.avatar       avatar,
+               u.username     username,
+               g.game_name    itemName,
+               c1.`comment`   reply,
+               c2.`comment`   comment,
+               c1.update_time updateTime
+        FROM tb_comment c1
+                 LEFT JOIN tb_comment c2 ON c1.parent_id = c2.id
+                 LEFT JOIN tb_user u ON c1.user_id = u.id
+                 LEFT JOIN tb_game g ON c1.item_id = g.id
+        WHERE c1.parent_id IN (SELECT id FROM tb_comment WHERE user_id = #{id} AND parent_id = 0)
+          AND c1.type = 2
+        ORDER BY c1.update_time DESC
+    </select>
+
+    <select id="bookReplyToMine" resultMap="ReplyToMine">
+        SELECT u.avatar       avatar,
+               u.username     username,
+               b.book_name    itemName,
+               c1.`comment`   reply,
+               c2.`comment`   comment,
+               c1.update_time updateTime
+        FROM tb_comment c1
+                 LEFT JOIN tb_comment c2 ON c1.parent_id = c2.id
+                 LEFT JOIN tb_user u ON c1.user_id = u.id
+                 LEFT JOIN tb_book b ON c1.item_id = b.id
+        WHERE c1.parent_id IN (SELECT id FROM tb_comment WHERE user_id = #{id} AND parent_id = 0)
+          AND c1.type = 3
+        ORDER BY c1.update_time DESC
+    </select>
+
+
+
+
+
+</mapper>

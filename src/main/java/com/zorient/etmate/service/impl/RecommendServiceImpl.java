@@ -48,10 +48,12 @@ public class RecommendServiceImpl implements RecommendService {
                     .stream().filter(film -> recommendFilmIds.contains(film.getId()))
                     .collect(Collectors.toList());
 
-            List<Film> hotFilmList=filmMapper.getHotFilms(14-recommendFilmList.size());
+            if(recommendFilmList.size()<14){
+                List<Film> hotFilmList=filmMapper.getHotFilms(14-recommendFilmList.size());
 
-            recommendFilmList.removeAll(hotFilmList);
-            recommendFilmList.addAll(hotFilmList);
+                recommendFilmList.removeAll(hotFilmList);
+                recommendFilmList.addAll(hotFilmList);
+            }
 
             log.info("size():{}",recommendFilmList.size());
 
@@ -80,10 +82,12 @@ public class RecommendServiceImpl implements RecommendService {
                     .stream().filter(game -> recommendGameIds.contains(game.getId()))
                     .collect(Collectors.toList());
 
-            List<Game> hotGameList=gameMapper.getHotGames(14-recommendGameList.size());
+            if(recommendGameList.size()<14){
+                List<Game> hotGameList=gameMapper.getHotGames(14-recommendGameList.size());
 
-            recommendGameList.removeAll(hotGameList);
-            recommendGameList.addAll(hotGameList);
+                recommendGameList.removeAll(hotGameList);
+                recommendGameList.addAll(hotGameList);
+            }
 
             log.info("size():{}",recommendGameList.size());
 
@@ -112,10 +116,12 @@ public class RecommendServiceImpl implements RecommendService {
                     .stream().filter(book -> recommendBookIds.contains(book.getId()))
                     .collect(Collectors.toList());
 
-            List<Book> hotBookList=bookMapper.getHotBooks(14-recommendBookList.size());
+            if(recommendBookList.size()<14){
+                List<Book> hotBookList=bookMapper.getHotBooks(14-recommendBookList.size());
 
-            recommendBookList.removeAll(hotBookList);
-            recommendBookList.addAll(hotBookList);
+                recommendBookList.removeAll(hotBookList);
+                recommendBookList.addAll(hotBookList);
+            }
 
             log.info("size():{}",recommendBookList.size());
 
@@ -125,7 +131,6 @@ public class RecommendServiceImpl implements RecommendService {
             return bookMapper.getHotBooks(14);
         }
     }
-
 
     /*
      * 基于物品的协同过滤推荐相关电影

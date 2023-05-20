@@ -1,10 +1,7 @@
 package com.zorient.etmate.controller;
 
 import com.zorient.etmate.anno.Log;
-import com.zorient.etmate.pojo.Comment;
-import com.zorient.etmate.pojo.PageBean;
-import com.zorient.etmate.pojo.Rate;
-import com.zorient.etmate.pojo.Result;
+import com.zorient.etmate.pojo.*;
 import com.zorient.etmate.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +40,6 @@ public class CommentController {
     /*
     * 添加评论
     * */
-    @Log
     @PostMapping("/comment")
     public Result insertComment(@RequestBody Comment comment){
         log.info("添加的评论信息为：{}",comment);
@@ -66,7 +62,6 @@ public class CommentController {
     /*
     * 评论修改
     * */
-    @Log
     @PutMapping("/comment")
     public Result updateComment(@RequestBody Comment comment){
         log.info("更新的评论信息为：{}",comment);
@@ -87,6 +82,24 @@ public class CommentController {
         return Result.success(rate);
     }
 
+    /*
+    * 根据用户id查询用户回复其他所有人的回复
+    * */
+    @GetMapping("/reply/{id}")
+    public Result getReply(@PathVariable Integer id){
+        ReplyResult replyResult=commentService.getReply(id);
 
+        return Result.success(replyResult);
+    }
+
+    /*
+    * 根据用户id查询其他用户回复你的评论
+    * */
+    @GetMapping("/bulletin/reply/{id}")
+    public Result replyToMine(@PathVariable Integer id){
+        List<Reply> replyList= commentService.replyToMine(id);
+
+        return Result.success(replyList);
+    }
 
 }

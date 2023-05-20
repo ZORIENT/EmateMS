@@ -2,6 +2,8 @@ package com.zorient.etmate;
 
 import com.zorient.etmate.mapper.CommentMapper;
 import com.zorient.etmate.pojo.Comment;
+import com.zorient.etmate.pojo.ReplyResult;
+import com.zorient.etmate.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import java.util.List;
 public class CommentTest {
     @Autowired
     private CommentMapper commentMapper;
+
+    @Autowired
+    private CommentService commentService;
 
     @Test
     public void testSelectFilmComment() {
@@ -62,6 +67,13 @@ public class CommentTest {
 
         log.info("rateAvg:{},rateNum:{},rate1:{}", rateAvg,rateNum,rate1);
 
+    }
+
+    @Test
+    public void testReply(){
+        ReplyResult replyResult=commentService.getReply(19);
+
+        log.info("replyResult:{}",replyResult);
     }
 
 }

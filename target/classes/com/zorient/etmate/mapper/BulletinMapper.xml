@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.BulletinMapper">
+    <resultMap id="bulletinMap" type="com.zorient.etmate.pojo.Bulletin">
+        <id property="id" column="id"/>
+        <result property="avatar" column="avatar"/>
+        <result property="username" column="username"/>
+        <result property="updateTime" column="updateTime"/>
+        <result property="createTime" column="createTime"/>
+        <result property="userId" column="userId"/>
+        <result property="content" column="content"/>
+        <result property="email" column="email"/>
+        <result property="image" column="image"/>
+        <result property="title" column="title"/>
+    </resultMap>
+
+    <select id="selectAllBulletin" resultMap="bulletinMap">
+        SELECT
+            u.avatar,
+            u.username,
+            u.email,
+            u.id userId,
+            b.id,
+            b.content,
+            b.image,
+            b.title,
+            b.create_time createTime,
+            b.update_time updateTime
+        FROM
+            tb_bulletin b
+                LEFT JOIN tb_user u ON b.user_id = u.id
+        ORDER BY
+            b.update_time DESC
+    </select>
+
+    <select id="selectBulletinById" resultMap="bulletinMap">
+        SELECT
+        u.avatar,
+        u.username,
+        u.email,
+        u.id userId,
+        b.id,
+        b.content,
+        b.image,
+        b.title,
+        b.create_time createTime,
+        b.update_time updateTime
+        FROM
+        tb_bulletin b
+        LEFT JOIN tb_user u ON b.user_id = u.id
+        <where>
+            <if test="id !=null">
+                b.id=#{id}
+            </if>
+        </where>
+    </select>
+
+    <!-- 批量删除公告信息 -->
+    <delete id="deleteBulletinByIds">
+        delete from etmate.tb_bulletin where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 添加公告 -->
+    <insert id="insertBulletin">
+        insert into tb_bulletin(user_id, title, content, image, create_time, update_time)
+        values (#{userId},#{title},#{content},#{image},#{createTime},#{updateTime});
+    </insert>
+
+    <!-- 修改公告 -->
+    <update id="updateBulletin">
+        update tb_bulletin
+        <set>
+            <if test="userId!=null">
+                user_id=#{userId},
+            </if>
+            <if test="title!=null and title!=''">
+                title=#{title},
+            </if>
+            <if test="content!=null and content !=''">
+                content=#{content},
+            </if>
+            <if test="image!=null and image!=''">
+                image=#{image},
+            </if>
+            <if test="createTime!=null">
+                create_time=#{createTime},
+            </if>
+            <if test="updateTime!=null">
+                update_time=#{updateTime}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>

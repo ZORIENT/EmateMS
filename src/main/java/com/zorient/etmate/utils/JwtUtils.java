@@ -8,10 +8,8 @@ import java.util.Date;
 import java.util.Map;
 
 public class JwtUtils {
-
     private static String signKey = "ZORIENT";//签名密钥
     private static Long expire = 43200000L;//过期时间12H
-
     /**
      * 生成JWT令牌
      * @param claims JWT第二部分负载 payload 中存储的内容
@@ -25,7 +23,6 @@ public class JwtUtils {
                 .compact();
         return jwt;
     }
-
     /**
      * 解析JWT令牌
      * @param jwt JWT令牌
