@@ -3,7 +3,6 @@ package com.zorient.etmate.pojo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 
 /*
@@ -28,7 +27,6 @@ public class Film {
     private String regions;//电影地区
     private LocalDate releaseDate;//上映时间
     private String storyline;//电影简介
-//    private LocalDate releaseYear;//上映年份
     private Integer releaseYear;//上映年份
     private String tags;//电影标签
 }

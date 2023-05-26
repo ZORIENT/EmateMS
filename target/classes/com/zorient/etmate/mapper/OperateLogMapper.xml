@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.OperateLogMapper">
+    <select id="selectByCondition" resultType="com.zorient.etmate.pojo.OperateLog">
+        SELECT
+            u.username, u.email, u.avatar, log.id, log.operate_user, log.operate_time,
+            log.class_name, log.method_name, log.method_params, log.return_value, log.cost_time
+        FROM
+            operate_log log
+                LEFT JOIN tb_user u ON log.operate_user = u.id
+        <where>
+            <if test="username!=null and username!=''">
+                u.username like concat('%',#{username},'%')
+            </if>
+            <if test="email!=null and email!=''">
+                and u.email like concat('%',#{email},'%')
+            </if>
+            <if test="className!=null and className!=''">
+                and log.class_name like concat('%',#{className},'%')
+            </if>
+            <if test="methodName!=null and methodName!=''">
+                and log.method_name like concat('%',#{methodName},'%')
+            </if>
+            <if test="begin !=null and end !=null">
+                and log.operate_time between #{begin} and #{end}
+            </if>
+        </where>
+        ORDER BY
+            operate_time DESC,cost_time DESC
+    </select>
+
+    <!-- 批量删除日志信息 -->
+    <delete id="deleteByIds">
+        delete from etmate.operate_log where id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

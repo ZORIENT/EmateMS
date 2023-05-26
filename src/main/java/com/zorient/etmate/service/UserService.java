@@ -19,4 +19,8 @@ public interface UserService {
     User login(User user);
 
     void updateUser(User user);
+
+    void banUser(Integer id);
+
+    void disbanUser(Integer id);
 }

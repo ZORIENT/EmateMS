@@ -3,7 +3,6 @@ package com.zorient.etmate.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zorient.etmate.mapper.BulletinMapper;
-import com.zorient.etmate.pojo.Book;
 import com.zorient.etmate.pojo.Bulletin;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.service.BulletinService;
@@ -44,9 +43,8 @@ public class BulletinServiceImpl implements BulletinService {
     * */
     @Override
     public Bulletin selectBulletinById(Integer id) {
-        Bulletin bulletin=bulletinMapper.selectBulletinById(id);
 
-        return bulletin;
+        return bulletinMapper.selectBulletinById(id);
     }
 
     @Override

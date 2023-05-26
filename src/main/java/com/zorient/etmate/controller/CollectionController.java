@@ -1,6 +1,5 @@
 package com.zorient.etmate.controller;
 
-import com.zorient.etmate.anno.Log;
 import com.zorient.etmate.pojo.Collection;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.pojo.Result;
@@ -19,7 +18,7 @@ public class CollectionController {
     * 条件分页查询收藏信息
     * */
     @GetMapping("/collection")
-    public Result selectByCondition(@RequestParam(required = true) Integer userId,
+    public Result selectByCondition(@RequestParam Integer userId,
                                     @RequestParam(required = false) Integer collectionId,
                                     @RequestParam(defaultValue = "1") Short type,
                                     @RequestParam(defaultValue = "1") Integer page,

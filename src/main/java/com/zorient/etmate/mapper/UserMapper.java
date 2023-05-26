@@ -25,4 +25,7 @@ public interface UserMapper {
     User login(User user);
 
     void updateUser(User user);
+
+    @Select("select * from tb_user where email=#{email}")
+    User selectByEmail(User user);
 }

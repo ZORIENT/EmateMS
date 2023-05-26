@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zorient.etmate.mapper.StatsMapper">
+    <resultMap id="filmMap" type="com.zorient.etmate.pojo.Category">
+        <result column="languages" property="categoryName"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="getFilmStats" resultMap="filmMap">
+        SELECT
+            languages,
+            count(*) count
+        FROM
+            tb_film
+        GROUP BY
+            languages
+        ORDER BY
+            count(*) DESC
+        LIMIT 10
+    </select>
+
+    <resultMap id="gameMap" type="com.zorient.etmate.pojo.Category">
+        <result column="genres" property="categoryName"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="getGameStats" resultMap="gameMap">
+        SELECT
+            genres,
+            count(*) count
+        FROM
+            tb_game
+        GROUP BY
+            genres
+        ORDER BY
+            count(*) DESC
+        LIMIT 10
+    </select>
+
+    <resultMap id="bookMap" type="com.zorient.etmate.pojo.Category">
+        <result column="publisher" property="categoryName"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="getBookStats" resultMap="bookMap">
+        SELECT
+            publisher,
+            count(*) count
+        FROM
+            tb_book
+        GROUP BY
+            publisher
+        ORDER BY
+            count(*) DESC
+        LIMIT 10
+    </select>
+</mapper>

@@ -16,7 +16,7 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping("/search")
-    public Result search(@RequestParam(required = true) String keyword,
+    public Result search(@RequestParam String keyword,
                          @RequestParam(defaultValue = "1") Integer page,
                          @RequestParam(defaultValue = "10") Integer pageSize){
         log.info("搜索的关键词是：{}",keyword);
@@ -24,6 +24,5 @@ public class SearchController {
 
         return Result.success(searchResult);
     }
-
 
 }

@@ -52,22 +52,20 @@ public class CoreMath {
     private static double relateDist(List<Comment> xList, List<Comment> yList, int type) {
         List<Double> xs = Lists.newArrayList();
         List<Double> ys = Lists.newArrayList();
-        xList.forEach(x -> {
-            yList.forEach(y -> {
-                if (type == 0) {
-                    if (x.getItemId().equals(y.getItemId())) {
-                        // getScore()获取评分
-                        xs.add((double) x.getScore());
-                        ys.add((double) y.getScore());
-                    }
-                } else {
-                    if (x.getUserId().equals(y.getUserId())) {
-                        xs.add((double) x.getScore());
-                        ys.add((double) y.getScore());
-                    }
+        xList.forEach(x -> yList.forEach(y -> {
+            if (type == 0) {
+                if (x.getItemId().equals(y.getItemId())) {
+                    // getScore()获取评分
+                    xs.add((double) x.getScore());
+                    ys.add((double) y.getScore());
                 }
-            });
-        });
+            } else {
+                if (x.getUserId().equals(y.getUserId())) {
+                    xs.add((double) x.getScore());
+                    ys.add((double) y.getScore());
+                }
+            }
+        }));
         return getRelate(xs, ys);
     }
 

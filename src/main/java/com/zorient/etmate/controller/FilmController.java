@@ -12,6 +12,7 @@ import com.zorient.etmate.service.FilmService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Slf4j
@@ -34,7 +35,6 @@ public class FilmController {
                                     @RequestParam(defaultValue = "1") Integer sortId,
                                     @RequestParam(defaultValue = "1") Integer page,
                                     @RequestParam(defaultValue = "35") Integer pageSize) {
-
         log.info("filmName:{},genres:{},languages:{},regions:{},releaseYear:{},tags:{}",
                 filmName,genres,languages,regions,releaseYear,tags);
 
@@ -100,6 +100,7 @@ public class FilmController {
 
         return Result.success(pageBean);
     }
+
 }
 
 

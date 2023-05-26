@@ -110,8 +110,4 @@
         insert into tb_collection(user_id, collection_id, type, create_time, update_time)
         values (#{userId}, #{collectionId}, #{type}, #{createTime}, #{updateTime})
     </insert>
-
-
-
-
 </mapper>

@@ -132,13 +132,13 @@
     </select>
 
     <resultMap id="ReplyToMine" type="com.zorient.etmate.pojo.Reply">
-        <id property="id" column="id"></id>
-        <result property="updateTime" column="updateTime"></result>
-        <result property="comment" column="comment"></result>
-        <result property="itemName" column="itemName"></result>
-        <result property="username" column="username"></result>
-        <result property="avatar" column="avatar"></result>
-        <result property="reply" column="reply"></result>
+        <id property="id" column="id"/>
+        <result property="updateTime" column="updateTime"/>
+        <result property="comment" column="comment"/>
+        <result property="itemName" column="itemName"/>
+        <result property="username" column="username"/>
+        <result property="avatar" column="avatar"/>
+        <result property="reply" column="reply"/>
     </resultMap>
 
     <select id="filmReplyToMine" resultMap="ReplyToMine">

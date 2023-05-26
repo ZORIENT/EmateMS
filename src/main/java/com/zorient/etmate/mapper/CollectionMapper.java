@@ -18,4 +18,10 @@ public interface CollectionMapper {
 
     @Delete("delete from tb_collection where id = #{id}")
     void deleteById(Integer id);
+
+    /*
+     * 根据电影、游戏、书籍的id删除与其相关的收藏
+     * */
+    @Delete("delete from tb_collection where collection_id=#{id} and type=#{type}")
+    void deleteCollectionsByCollectionId(Integer id,Short type);
 }

@@ -1,6 +1,5 @@
 package com.zorient.etmate.controller;
 
-import com.zorient.etmate.anno.Log;
 import com.zorient.etmate.pojo.Result;
 import com.zorient.etmate.utils.AliOSSUtils;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,6 @@
 package com.zorient.etmate.controller;
 
 import com.zorient.etmate.anno.Log;
-import com.zorient.etmate.exception.AppException;
-import com.zorient.etmate.exception.AppExceptionCodeMsg;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.pojo.Result;
 import com.zorient.etmate.pojo.User;
@@ -57,18 +55,19 @@ public class UserController {
     @Log
     @DeleteMapping("/user/{ids}")
     public Result deleteByIds(@PathVariable List<Integer> ids) {
+        log.info("批量删除用户：{}", ids);
         userService.deleteByIds(ids);
 
         return Result.success();
     }
 
     /*
-    * 修改用户信息
-    * */
+     * 修改用户信息
+     * */
     @Log
     @PutMapping("/user")
-    public Result updateUser(@RequestBody User user){
-        log.info("修改的用户信息为：{}",user);
+    public Result updateUser(@RequestBody User user) {
+        log.info("修改的用户信息为：{}", user);
         userService.updateUser(user);
 
         return Result.success();
@@ -94,22 +93,39 @@ public class UserController {
         User u = userService.login(user);
 
         //登陆成功，生成并下发令牌
-        if (u != null) {
-            Map<String, Object> claims = new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
 
-            claims.put("id",u.getId());
-            claims.put("email", u.getEmail());
-            claims.put("username", u.getUsername());
-            claims.put("privilege", u.getPrivilege());
+        claims.put("id", u.getId());
+        claims.put("email", u.getEmail());
+        claims.put("username", u.getUsername());
+        claims.put("privilege", u.getPrivilege());
 
-            String jwt = JwtUtils.generateJWT(claims);
-            return Result.success(jwt);
-        }else{
-            throw new AppException(AppExceptionCodeMsg.LOGIN_FAIL);
-        }
-
-        /*return Result.error("NO_LOGIN");*/
+        String jwt = JwtUtils.generateJWT(claims);
+        return Result.success(jwt);
     }
+
+    /*
+     * 封禁用户！
+     * */
+    @PostMapping("/user/ban/{id}")
+    public Result banUser(@PathVariable Integer id) {
+        userService.banUser(id);
+
+        return Result.success();
+    }
+
+
+    /*
+     * 解封用户
+     * */
+    @PostMapping("/user/disban/{id}")
+    public Result disbanUser(@PathVariable Integer id) {
+        userService.disbanUser(id);
+
+        return Result.success();
+    }
+
+
 }
 
 

@@ -2,14 +2,18 @@ package com.zorient.etmate.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.zorient.etmate.exception.AppException;
+import com.zorient.etmate.exception.AppExceptionCodeMsg;
+import com.zorient.etmate.mapper.CollectionMapper;
+import com.zorient.etmate.mapper.CommentMapper;
 import com.zorient.etmate.mapper.GameMapper;
-import com.zorient.etmate.pojo.Film;
 import com.zorient.etmate.pojo.Game;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.service.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,24 +23,24 @@ public class GameServiceImpl implements GameService {
     @Autowired
     private GameMapper gameMapper;
 
+    @Autowired
+    private CommentMapper commentMapper;
+
+    @Autowired
+    private CollectionMapper collectionMapper;
+
     /*
     * 条件分页查询游戏信息
     * */
     @Override
     public PageBean selectByCondition(String gameName, String platforms, Integer releaseYear, String genres,
                                       String publisher, String tags, Integer sortId, Integer page, Integer pageSize) {
-        String  sort=new String("game_name");
-        switch(sortId){
-            case 1:
-                sort="game_name";
-                break;
-            case 2:
-                sort="time_platform";
-                break;
-            default:
-                sort="platforms";
-                break;
-        }
+        String  sort = switch (sortId) {
+            case 1 -> "game_name";
+            case 2 -> "time_platform";
+            case 3 -> "platforms";
+            default -> throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);
+        };
 
         log.info("sort的值：{}",sort);
 
@@ -61,14 +65,26 @@ public class GameServiceImpl implements GameService {
     public Game selectById(Integer id) {
         Game game=gameMapper.selectById(id);
 
-        return game;
+        if(game!=null){
+            // 查询结果不为空
+            return game;
+        }else{
+            throw new AppException(AppExceptionCodeMsg.RESOURCE_NOT_AVAILABLE);
+        }
     }
 
     /*
     * 批量删除游戏信息
     * */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIds(List<Integer> ids) {
+        // 删除相关评论和收藏
+        for(Integer id:ids){
+            commentMapper.deleteCommentsByItemId(id,(short)2);
+            collectionMapper.deleteCollectionsByCollectionId(id,(short)2);
+        }
+
         gameMapper.deleteByIds(ids);
     }
 

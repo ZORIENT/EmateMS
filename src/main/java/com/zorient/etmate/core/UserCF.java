@@ -34,7 +34,7 @@ public class UserCF {
             //最近邻用户看过的电影，游戏，书籍列表
             List<Integer> neighborItems = userMap.get(nearestUserId).stream().map(Comment::getItemId).collect(Collectors.toList());
             //拟推荐用户看过的电影，游戏，书籍列表
-            List<Integer> userItems = userMap.get(userId).stream().map(Comment::getItemId).collect(Collectors.toList());
+            List<Integer> userItems = userMap.get(userId).stream().map(Comment::getItemId).toList();
             //找到最近邻看过，但是该用户没看过的电影
             neighborItems.removeAll(userItems);
 

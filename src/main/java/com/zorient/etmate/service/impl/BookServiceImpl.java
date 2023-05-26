@@ -2,14 +2,18 @@ package com.zorient.etmate.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.zorient.etmate.exception.AppException;
+import com.zorient.etmate.exception.AppExceptionCodeMsg;
 import com.zorient.etmate.mapper.BookMapper;
+import com.zorient.etmate.mapper.CollectionMapper;
+import com.zorient.etmate.mapper.CommentMapper;
 import com.zorient.etmate.pojo.Book;
-import com.zorient.etmate.pojo.Film;
 import com.zorient.etmate.pojo.PageBean;
 import com.zorient.etmate.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,6 +23,12 @@ public class BookServiceImpl implements BookService {
     @Autowired
     private BookMapper bookMapper;
 
+    @Autowired
+    private CommentMapper commentMapper;
+
+    @Autowired
+    private CollectionMapper collectionMapper;
+
     /*
     * 条件分页查询书籍信息
     * */
@@ -26,18 +36,12 @@ public class BookServiceImpl implements BookService {
     public PageBean selectByCondition(String ibsn, String bookName, Integer releaseYear, String author,
                                       String publisher, String tags, Integer sortId, Integer page, Integer pageSize) {
 
-        String  sort=new String("douban_score");
-        switch(sortId){
-            case 1:
-                sort="douban_score";
-                break;
-            case 2:
-                sort="publication_time";
-                break;
-            default:
-                sort="price";
-                break;
-        }
+        String  sort = switch (sortId) {
+            case 1 -> "douban_score";
+            case 2 -> "publication_time";
+            case 3 -> "price";
+            default -> throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);
+        };
 
         log.info("sort的值：{}",sort);
 
@@ -62,14 +66,28 @@ public class BookServiceImpl implements BookService {
     public Book selectById(Integer id) {
         Book book=bookMapper.selectById(id);
 
-        return book;
+        if(book!=null){
+            // 结果不为空
+            return book;
+        }else{
+            throw new AppException(AppExceptionCodeMsg.RESOURCE_NOT_AVAILABLE);
+        }
+
+
     }
 
     /*
     * 批量删除书籍信息
     * */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteByIds(List<Integer> ids) {
+        // 删除相关评论和收藏
+        for(Integer id:ids){
+            commentMapper.deleteCommentsByItemId(id,(short)3);
+            collectionMapper.deleteCollectionsByCollectionId(id,(short)3);
+        }
+
         bookMapper.deleteByIds(ids);
     }
 

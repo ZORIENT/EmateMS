@@ -1,7 +1,6 @@
 package com.zorient.etmate.mapper;
 
 import com.zorient.etmate.pojo.Book;
-import com.zorient.etmate.pojo.Film;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 

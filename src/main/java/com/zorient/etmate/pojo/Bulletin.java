@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class Bulletin {
     private Integer id;//公告id
     private Integer userId;//公告发布者id
+
     private String avatar;//发布公告作者头像
     private String username;//发布公告作者昵称
     private String email;//电子邮箱

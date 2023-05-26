@@ -28,25 +28,15 @@ public class CollectionServiceImpl implements CollectionService {
     public PageBean selectByCondition(Integer userId, Integer collectionId, Short type, Integer page, Integer pageSize) {
         //使用pagehelper设置分页参数
         PageHelper.startPage(page, pageSize);
-        List<Collection> collections=null;
-
-
-        switch (type) {
+        List<Collection> collections = switch (type) {
             /*查询电影收藏*/
-            case 1:
-                collections = collectionMapper.selectFilmCollection(userId,collectionId,type);
-                break;
+            case 1 -> collectionMapper.selectFilmCollection(userId, collectionId, type);
             /*查询游戏收藏*/
-            case 2:
-                collections=collectionMapper.selectGameCollection(userId,collectionId,type);
-                break;
+            case 2 -> collectionMapper.selectGameCollection(userId, collectionId, type);
             /*查询书籍收藏*/
-            case 3:
-                collections=collectionMapper.selectBookCollection(userId,collectionId,type);
-                break;
-            default:
-                throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);
-        }
+            case 3 -> collectionMapper.selectBookCollection(userId, collectionId, type);
+            default -> throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);
+        };
 
         Page<Collection> p= (Page<Collection>) collections;
 
@@ -62,10 +52,24 @@ public class CollectionServiceImpl implements CollectionService {
     * */
     @Override
     public void insertCollection(Collection collection) {
-        collection.setCreateTime(LocalDateTime.now());
-        collection.setUpdateTime(LocalDateTime.now());
+        List<Collection> collections = switch (collection.getType()) {
+            /*查询电影收藏*/
+            case 1 -> collectionMapper.selectFilmCollection(collection.getUserId(), collection.getCollectionId(), (short)1);
+            /*查询游戏收藏*/
+            case 2 -> collectionMapper.selectGameCollection(collection.getUserId(), collection.getCollectionId(), (short)2);
+            /*查询书籍收藏*/
+            case 3 -> collectionMapper.selectBookCollection(collection.getUserId(), collection.getCollectionId(), (short)3);
+            default -> throw new AppException(AppExceptionCodeMsg.PARAM_ERROR);
+        };
 
-        collectionMapper.insertCollection(collection);
+        if(collections.size()>=1){
+            throw new AppException(AppExceptionCodeMsg.COLLECTION_ALREADY_EXIST);
+        }else{
+            collection.setCreateTime(LocalDateTime.now());
+            collection.setUpdateTime(LocalDateTime.now());
+
+            collectionMapper.insertCollection(collection);
+        }
     }
 
     /*

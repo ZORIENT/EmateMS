@@ -74,8 +74,8 @@ public class CommentController {
     * 获取对应电影、游戏、书籍的详细评分信息
     * */
     @GetMapping("/rate")
-    public Result getRates(@RequestParam(required = true) Integer itemId,
-                           @RequestParam(required = true) Short type){
+    public Result getRates(@RequestParam Integer itemId,
+                           @RequestParam Short type){
         log.info("itemId:{},type:{}",itemId,type);
         Rate rate=commentService.getRates(itemId,type);
 

@@ -1,11 +1,13 @@
 package com.zorient.etmate.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AppException extends RuntimeException{
-    private Integer code=500;
-    private String msg="服务器端异常";
+    private Integer code;
+    private String msg;
 
     /*
     * 传入一个枚举类型
@@ -15,8 +17,8 @@ public class AppException extends RuntimeException{
         this.msg=appExceptionCodeMsg.getMsg();
     }
 
-    public AppException(Integer code,String msg){
-        this.code=code;
-        this.msg=msg;
-    }
+//    public AppException(Integer code,String msg){
+//        this.code=code;
+//        this.msg=msg;
+//    }
 }
